@@ -1,0 +1,68 @@
+<!-- myapp/templates/myapp/article_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список новостей</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .messages { margin: 20px 0; }
+        .alert { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .news-item { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .news-title { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+        .news-meta { color: #666; font-size: 14px; margin-bottom: 10px; }
+        .news-link { color: #007bff; text-decoration: none; }
+        .news-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Собранные новости с Lenta.ru</h1>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'parse_page' %}" style="padding: 10px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+            🗞️ Запустить парсинг новостей
+        </a>
+    </div>
+    
+    <h2>Всего новостей: {{ articles|length }}</h2>
+    
+    {% if articles %}
+    <div class="news-list">
+        {% for article in articles %}
+        <div class="news-item">
+            <div class="news-title">
+                <a href="{{ article.url }}" target="_blank" class="news-link">
+                    {{ article.title }}
+                </a>
+            </div>
+            <div class="news-meta">
+                📅 {{ article.published|date:"d.m.Y H:i" }} | 
+                📰 {{ article.source }} |
+                🔗 <a href="{{ article.url }}" target="_blank">Открыть оригинал</a>
+            </div>
+            {% if article.text %}
+            <p>{{ article.text }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="padding: 20px; background: #f8f9fa; border-radius: 5px; text-align: center;">
+        <p>Новостей пока нет.</p>
+        <p><a href="{% url 'parse_page' %}">Запустите парсинг</a>, чтобы получить свежие новости с Lenta.ru</p>
+    </div>
+    {% endif %}
+</body>
+</html>
