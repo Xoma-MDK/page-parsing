@@ -11,3 +11,4 @@ myfirstproj/__pycache__/__init__.cpython-313.pyc
 myfirstproj/__pycache__/settings.cpython-313.pyc
 myfirstproj/__pycache__/urls.cpython-313.pyc
 myfirstproj/__pycache__/wsgi.cpython-313.pyc
+myapp/__pycache__/middleware.cpython-313.pyc

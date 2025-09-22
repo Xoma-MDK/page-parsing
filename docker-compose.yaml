@@ -1,0 +1,45 @@
+version: '3.8'
+
+networks:
+  molotkov:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.0.0/24
+
+volumes:
+  postgres_data:
+
+services:
+  web:
+    build: .
+    container_name: news-aggregator
+    ports:
+      - "8000:8000"
+    environment:
+      - LOG_FILE_PATH=/app/logs/access.log
+      - LOG_DIR=/app/logs
+      - DJANGO_DEBUG=False
+    volumes:
+      - ./logs:/app/logs:rw
+    depends_on:
+      - db
+    networks:
+      molotkov:
+        ipv4_address: 10.20.0.10
+    restart: unless-stopped
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: study
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      molotkov:
+        ipv4_address: 10.20.0.11

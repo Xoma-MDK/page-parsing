@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'myapp.middleware.RequestLoggingMiddleware', 
 ]
 
 ROOT_URLCONF = 'myfirstproj.urls'
@@ -77,9 +78,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'study',
-	'USER': 'userdb',
-	'PASSWORD': '12345678',
-	'HOST': '127.0.0.1',
+	'USER': 'postgres',
+	'PASSWORD': 'postgres',
+	'HOST': 'db',
 	'PORT': '5432',
     }
 }
@@ -125,3 +126,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}

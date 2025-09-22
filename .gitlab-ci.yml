@@ -1,0 +1,38 @@
+# .gitlab-ci.yml
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_IMAGE: your-dockerhub-username/news-aggregator
+  LOG_DIR: ${CI_PROJECT_DIR}/logs
+
+before_script:
+  - mkdir -p $LOG_DIR
+  - docker --version
+
+build:
+  stage: build
+  script:
+    - docker build -t $DOCKER_IMAGE:latest .
+  only:
+    - main
+    - master
+
+test:
+  stage: test
+  script:
+    - docker run --rm $DOCKER_IMAGE:latest python manage.py check
+  only:
+    - main
+    - master
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deployment would happen here"
+    - docker-compose up -d
+  only:
+    - main
+    - master

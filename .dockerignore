@@ -1,0 +1,12 @@
+.env
+*.pyc
+__pycache__
+db.sqlite3
+logs/
+.DS_Store
+.git
+.gitignore
+.gitlab-ci.yml
+docker-compose.yaml
+Dockerfile
+get-docker.sh
